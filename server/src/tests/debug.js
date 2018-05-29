@@ -1,4 +1,5 @@
 let Scraper = require('../lib/Scraper');
+let ReadConfig = require('../lib/ReadConfig');
 
 let data = {
     "request_conf": {
@@ -2516,6 +2517,22 @@ let data = {
     }]
 }
 
-let scraper = new Scraper(data['request_conf'], data['include'], data['locations'], data['fields']);
+let run = (async ()=>{
+    let site = 'findjobs';
+    let conf = new ReadConfig(`../sites/${site}.locations.xml`);
+    await conf.getData();
+    let info = conf.getInfo();
+    let regions = conf.getRegions();
+    let areas = conf.getAreas();
+    let locations = conf.getLocations();
+    console.log(info, 'info');
+    console.log(regions, 'regions');
+    console.log(areas, 'areas');
+    console.log(locations, 'locations');
+    return;
+    let scraper = new Scraper(data['request_conf'], data['include'], data['locations'], data['fields']);
+    let cl_data = await scraper.fetchData();
+    console.log('fetched', cl_data);
+});
 
-console.log(scraper.getRecords());
+run();
