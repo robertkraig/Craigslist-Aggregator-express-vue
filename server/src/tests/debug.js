@@ -2520,7 +2520,7 @@ let data = {
 let run = (async ()=>{
     let site = 'findjobs';
     let conf = new ReadConfig(`../sites/${site}.locations.xml`);
-    await conf.getData();
+    await conf.loadData();
     let info = conf.getInfo();
     let regions = conf.getRegions();
     let areas = conf.getAreas();

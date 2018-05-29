@@ -141,6 +141,13 @@ class ReadConfig {
 
     getLocations()
     {
+        if(this.locations === null)
+        {
+            let obj = getAreas(this.conf);
+            this.areas = obj.areas;
+            this.locations = obj.locations;
+        }
+
         return this.locations;
     }
 
@@ -178,7 +185,7 @@ class ReadConfig {
         return this.info;
     }
 
-    async getData()
+    async loadData()
     {
         if(this.conf === null)
         {
