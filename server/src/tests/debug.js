@@ -25,7 +25,7 @@ let run = async () => {
   console.log(areas, 'areas')
   console.log(locations, 'locations')
   let scraper = new Scraper(data, data['include'], locations, fields)
-  let clData = await scraper.fetchData()
+  let clData = await scraper.fetchData({})
   console.log('fetched', clData)
 }
 

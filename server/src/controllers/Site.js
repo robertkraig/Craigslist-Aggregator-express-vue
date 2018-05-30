@@ -12,7 +12,14 @@ const sites = [
 ]
 
 const validateSite = (req, res) => {
-  let site = req.query['site'] || 'findjobs'
+  let site = null
+  if (req.query['site']) {
+    site = req.query['site']
+  } else if (req.body['site']) {
+    site = req.body['site']
+  } else {
+    site = 'findjobs'
+  }
 
   if (!/^find.*/.test(site)) { site = `find${site}` }
 
@@ -48,6 +55,7 @@ module.exports = {
     let site = validateSite(req, res)
     if (site === false) { return }
 
+    console.debug('body', req.body, req.headers)
     let include = (req.body.include || false)
 
     let filePath = path.resolve(__dirname, `../sites/${site}.locations.xml`)
@@ -64,7 +72,7 @@ module.exports = {
     }
 
     let scraper = new Scraper(req.body, include, locations, fields)
-    let results = await scraper.fetchData()
+    let results = await scraper.fetchData(req)
     res.send({searchResults: results})
   },
 

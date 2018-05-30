@@ -96,10 +96,12 @@ const processDataToJson = async (searchItems) => {
 /**
  *
  * @param {Object} location
+ * @param {Object} headers
  * @returns {Promise<*>}
  */
-let getRecords = async (location) => {
-  let content = await Utils.getFileCache(location['url'])
+let getRecords = async (location, headers) => {
+  let content = await Utils.getFileCache(location['url'], headers)
+  if (content === false) { return [] }
   let xmlParsedData = await parseXml(content, location)
   return processDataToJson(xmlParsedData)
 }
@@ -124,7 +126,7 @@ class Scraper {
      *
      * @returns {Promise<Array>}
      */
-  async fetchData () {
+  async fetchData (req) {
     let includeStr = this.include.map((val) => {
       return val.replace(/\./g, '\\.').replace(/\+/g, '(.+)')
     }).join('|')
@@ -134,7 +136,7 @@ class Scraper {
     for (let idx in locations) {
       let location = locations[idx]
       if (testRegex.test(location['url'])) {
-        let list = await getRecords(location)
+        let list = await getRecords(location, req.headers)
         this.recordList = this.recordList.concat(list)
       }
     }
