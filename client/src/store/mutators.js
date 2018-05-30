@@ -28,10 +28,10 @@ export default {
   },
   updateRegionSelection (state, region) {
     let selected = !region.selected
-    let index = state.confData.region_list.indexOf(region)
-    let oldState = state.confData.region_list[index]
+    let index = state.confData.regionList.indexOf(region)
+    let oldState = state.confData.regionList[index]
 
-    state.confData.region_list.splice(index, 1, Object.assign({}, {
+    state.confData.regionList.splice(index, 1, Object.assign({}, {
       ...oldState,
       selected
     }))

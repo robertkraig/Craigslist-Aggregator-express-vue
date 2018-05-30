@@ -53,7 +53,7 @@ export default {
     commit('runningConfUpdate')
     commit('changeSite', newSite)
 
-    let confInit = await axios.get('/api/site/init', {
+    let confInit = await axios.get('/api/init', {
       params: {
         site: newSite
       }
@@ -84,7 +84,7 @@ export default {
           break
 
         case 'checkbox':
-          form[field['checkbox']['arg_name']] = ''
+          form[field['checkbox']['argName']] = ''
           break
       }
     })

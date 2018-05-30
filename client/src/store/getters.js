@@ -32,7 +32,7 @@ export default {
     return state.confData.fields
   },
   getRegionList (state) {
-    return state.confData.region_list
+    return state.confData.regionList
   },
   getAreaList (state) {
     return state.confData.areaList

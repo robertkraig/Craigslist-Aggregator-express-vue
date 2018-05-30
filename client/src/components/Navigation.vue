@@ -11,9 +11,9 @@
           </div>
           <div v-if="isEq(field.argType, 'radio')">
             <div v-for="(radio, rIdx) in field.radios" :key="rIdx">
-              <label class="fields" :for="radio.argName_id" v-html="radio.argName"></label>
+              <label class="fields" :for="radio.argNameId" v-html="radio.argName"></label>
               <input class="fields" type="radio" v-model="form[field.argName]" :value="radio.arg"
-                     :id="radio.argName_id"/>
+                     :id="radio.argNameId"/>
               <br style="margin:0;padding:0; height:1px; clear: left;"/>
             </div>
           </div>

@@ -46,8 +46,8 @@ module.exports = {
 
     res.send({
       title: info['title'],
-      pageTitle: info['pagetitle'],
-      searchExample: info['pagesearchexample']
+      pageTitle: info['pageTitle'],
+      searchExample: info['searchExample']
     })
   },
 

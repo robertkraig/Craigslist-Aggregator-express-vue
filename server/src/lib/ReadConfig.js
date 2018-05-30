@@ -3,7 +3,12 @@ let xml2js = require('xml2js-es6-promise')
 let sortObj = require('sort-object')
 
 const getInfo = (obj) => {
-  return obj['clrepo']['info'][0]
+  let info = obj['clrepo']['info'][0]
+  return {
+    title: info['title'][0],
+    pageTitle: info['pagetitle'][0],
+    searchExample: info['pagesearchexample'][0]
+  }
 }
 
 const getFields = (obj) => {
@@ -29,8 +34,8 @@ const getFieldsArray = (obj) => {
       for (let i = 0; i < title.length; i++) {
         fields['radios'].push({
           checked: select[i] === '1',
-          arg_name: title[i],
-          arg_name_id: title[i].replace(/ /g, '_'),
+          argName: title[i],
+          argNameId: title[i].replace(/ /g, '_'),
           arg: args[i]
         })
       }

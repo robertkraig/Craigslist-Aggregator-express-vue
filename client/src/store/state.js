@@ -9,10 +9,10 @@ export default {
   confData: {
     form: {},
     title: '',
-    pagetitle: '',
-    pagesearchexample: '',
+    pageTitle: '',
+    pageSearchExample: '',
     areaList: [],
-    region_list: [],
+    regionList: [],
     fields: {}
   }
 }
