@@ -42,10 +42,10 @@ const parseXml = async (xml, location) => {
   let items = xml2Obj['rdf:RDF']['item'] || []
   return items.map((item) => {
     return {
-      location: location['partial'],
-      date: item['dc:date'],
-      source: item['dc:source'],
-      title: item['dc:title']
+      location: location['partial'][0],
+      date: item['dc:date'][0],
+      source: item['dc:source'][0],
+      title: item['dc:title'][0]
     }
   })
 }
@@ -61,14 +61,6 @@ const processDataToJson = async (searchItems) => {
     let date = item['date']
     let uniqueGroupHash = Date.parse(date)
     data[uniqueGroupHash] = item
-  })
-
-  data = sortObj(data, {
-    sort: function (a, b) {
-      if (a === b) { return 0 }
-
-      return a > b ? 1 : -1
-    }
   })
 
   // console.log(data);
@@ -90,7 +82,16 @@ const processDataToJson = async (searchItems) => {
     }
   })
 
-  return regroupList
+  let flattenArray = Object.values(regroupList);
+  flattenArray = sortObj(flattenArray, {
+      sort: function (a, b) {
+          if (a['timestamp'] === b['timestamp']) { return 0 }
+
+          return a['timestamp'] > b['timestamp'] ? 1 : -1
+      }
+  })
+
+  return flattenArray.reverse();
 }
 
 /**

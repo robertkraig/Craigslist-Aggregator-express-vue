@@ -19,44 +19,47 @@ const getFieldsArray = (obj) => {
   let fields = getFields(obj)
 
   return fields.map((field) => {
-    if (['int', 'string'].indexOf(field['argType']) !== -1) {
-      field['argType'] = 'text'
-    } else if (field['argType'] === 'radio') {
-      let argList = field['argTitle'].split(':')
+
+    let tmp = {};
+
+    let argType = field['argType'][0];
+    let argTitle = field['argTitle'][0];
+    let fieldArgName = field['argName'][0];
+
+    tmp['argName'] = fieldArgName;
+
+    if (['int', 'string'].indexOf(argType) !== -1) {
+      tmp['argTitle'] = argTitle
+      tmp['argType'] = 'text'
+    } else if (argType === 'radio') {
+      let argList = argTitle.split(':')
       let title = argList[0].split('|')
       let args = argList[1].split('|')
       let select = argList[2].split('|')
 
-      field['radios'] = []
-      delete field['argId']
-      delete field['argKey']
-      delete field['argTitle']
+        tmp['argType'] = argType
+        tmp['radios'] = []
       for (let i = 0; i < title.length; i++) {
-        fields['radios'].push({
+          tmp['radios'].push({
           checked: select[i] === '1',
           argName: title[i],
           argNameId: title[i].replace(/ /g, '_'),
           arg: args[i]
         })
       }
-    } else if (field['argType'] === 'checkbox') {
-      let argList = field['argTitle'].split(':')
+    } else if (argType === 'checkbox') {
+      let argList = argTitle.split(':')
       let title = argList[0]
       let value = argList[1]
-      let argName = field['argName'].replace(/ /g, '_')
 
-      delete field['argId']
-      delete field['argKey']
-      delete field['argName']
-      delete field['argTitle']
-
-      field['checkbox'] = {
+      tmp['argType'] = argType
+      tmp['checkbox'] = {
         title: title,
         value: value,
-        argName: argName
+        argName: fieldArgName.replace(/ /g, '_')
       }
     }
-    return field
+    return tmp
   })
 }
 
@@ -65,17 +68,24 @@ const getAreas = (obj) => {
   let areas = {}
 
   locations.sort(function (a, b) {
-    if (a['state'] === b['state']) { return a['name'] > b['name'] ? 1 : -1 } else { return a['name'] > b['name'] ? 1 : -1 }
+    let stateA = a['state'][0];
+    let stateB = b['state'][0];
+
+    let nameA = a['name'][0];
+    let nameB = b['name'][0];
+
+    if (stateA === stateB) { return nameA > nameB ? 1 : -1 } else { return stateA > stateB ? 1 : -1 }
   })
 
   locations.forEach((value) => {
-    if (!areas[value['state']]) { areas[value['state']] = [] }
+    let state = value['state'][0];
+    if (!areas[state]) { areas[state] = [] }
 
-    areas[value['state']].push({
-      type: value['type'],
-      partial: value['partial'],
+    areas[state].push({
+      type: value['type'][0],
+      partial: value['partial'][0],
       name: `${value['name']}`.toUpperCase(),
-      state: value['state']
+      state: value['state'][0]
     })
   })
 
@@ -96,7 +106,7 @@ const getRegions = (obj) => {
 
   return regions.map((region) => {
     return {
-      type: region['type'],
+      type: region['type'][0],
       name: `${region['name']}`.toUpperCase()
     }
   })
