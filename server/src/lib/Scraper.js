@@ -93,6 +93,11 @@ const processDataToJson = async (searchItems) => {
   return regroupList
 }
 
+/**
+ *
+ * @param {Object} location
+ * @returns {Promise<*>}
+ */
 let getRecords = async (location) => {
   let content = await Utils.getFileCache(location['url'])
   let xmlParsedData = await parseXml(content, location)
@@ -102,19 +107,14 @@ let getRecords = async (location) => {
 class Scraper {
   /**
      *
-     * @param {Array} args
+     * @param {Array} requestConf
      * @param {Array} include
      * @param {Array} locations
      * @param {Array} fields
      */
-  constructor (args, include, locations, fields) {
-    /**
-         *
-         * @type {Array}
-         * @private
-         */
+  constructor (requestConf, include, locations, fields) {
     this.recordList = []
-    this.request_conf = args
+    this.requestConf = requestConf
     this.include = include
     this.locations = locations
     this.fields = fields
@@ -129,7 +129,7 @@ class Scraper {
       return val.replace(/\./g, '\\.').replace(/\+/g, '(.+)')
     }).join('|')
 
-    let locations = AppendAndBuildSearchQuery(this.request_conf, this.fields, this.locations)
+    let locations = AppendAndBuildSearchQuery(this.requestConf, this.fields, this.locations)
     let testRegex = new RegExp(`(${includeStr})`)
     for (let idx in locations) {
       let location = locations[idx]
