@@ -72,10 +72,10 @@ const processDataToJson = async (searchItems) => {
     try {
       let date = new Date(parseInt(timestamp))
       let hashGroup = dateformat(date, 'isoDate')
-      regroupList[hashGroup] = {}
+      if(!regroupList[hashGroup]) {regroupList[hashGroup] = {}}
       regroupList[hashGroup]['timestamp'] = timestamp
       regroupList[hashGroup]['date'] = dateformat(date, 'longDate')
-      regroupList[hashGroup]['records'] = {}
+      if(!regroupList[hashGroup]['records']) { regroupList[hashGroup]['records'] = {} }
       regroupList[hashGroup]['records'][_data['location']] = [_data]
     } catch (error) {
       console.log(error, timestamp)
@@ -83,13 +83,11 @@ const processDataToJson = async (searchItems) => {
   })
 
   let flattenArray = Object.values(regroupList);
-  flattenArray = sortObj(flattenArray, {
-      sort: function (a, b) {
-          if (a['timestamp'] === b['timestamp']) { return 0 }
+  flattenArray.sort(function (a, b) {
+      if (a['timestamp'] === b['timestamp']) { return 0 }
 
-          return a['timestamp'] > b['timestamp'] ? 1 : -1
-      }
-  })
+      return a['timestamp'] > b['timestamp'] ? 1 : -1
+  });
 
   return flattenArray.reverse();
 }
@@ -104,7 +102,7 @@ let getRecords = async (location, headers) => {
   let content = await Utils.getFileCache(location['url'], headers)
   if (content === false) { return [] }
   let xmlParsedData = await parseXml(content, location)
-  return processDataToJson(xmlParsedData)
+  return xmlParsedData;
 }
 
 class Scraper {
@@ -142,7 +140,7 @@ class Scraper {
       }
     }
 
-    return this.recordList
+    return processDataToJson(this.recordList);
   }
 }
 
