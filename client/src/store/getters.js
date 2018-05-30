@@ -20,7 +20,7 @@ export default {
     return state.isConfLoaded
   },
   getPageTitle (state) {
-    return state.confData.pagetitle
+    return state.confData.pageTitle
   },
   getSearchExample (state) {
     return state.confData.searchExample

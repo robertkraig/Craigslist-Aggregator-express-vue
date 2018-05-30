@@ -5,6 +5,8 @@ import store from './store'
 
 import './sass/app.scss'
 
+Vue.config.devtools = true
+
 export default new Vue({
   el: '#app',
   template: '<Layout />',

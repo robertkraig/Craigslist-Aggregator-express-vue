@@ -1,5 +1,5 @@
 import filter from 'lodash/filter'
-import axios from 'axios/index'
+import Api from '../service/Api'
 import map from 'lodash/map'
 import each from 'lodash/each'
 
@@ -36,7 +36,7 @@ export default {
       site: state.site
     }
 
-    let results = await axios.post('/api/sites/fetch', submitData, {
+    let results = await Api().post('/api/sites/fetch', submitData, {
       headers: {
         'Content-Type': 'application/json'
       }
@@ -53,7 +53,7 @@ export default {
     commit('runningConfUpdate')
     commit('changeSite', newSite)
 
-    let confInit = await axios.get('/api/init', {
+    let confInit = await Api().get('/api/init', {
       params: {
         site: newSite
       }
@@ -67,7 +67,7 @@ export default {
       searchExample
     })
 
-    let confData = await axios.get('/api/sites/conf', {
+    let confData = await Api().get('/api/sites/conf', {
       params: {
         site: newSite
       }
