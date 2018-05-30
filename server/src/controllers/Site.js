@@ -1,6 +1,7 @@
 
 let ReadConf = require('../lib/ReadConfig')
 let Scraper = require('../lib/Scraper')
+let path = require('path')
 
 const sites = [
   'findstuff',
@@ -28,8 +29,10 @@ module.exports = {
   async initConf (req, res) {
     let site = validateSite(req, res)
     if (site === false) { return }
+    console.log('testing')
 
-    let conf = new ReadConf(`../sites/${site}.locations.xml`)
+    let filePath = path.resolve(__dirname, `../sites/${site}.locations.xml`)
+    let conf = new ReadConf(filePath)
     await conf.loadData()
 
     let info = conf.getInfo()
@@ -45,16 +48,17 @@ module.exports = {
     let site = validateSite(req, res)
     if (site === false) { return }
 
-    let include = req.body.include || false
+    let include = (req.body.include || false)
 
-    let conf = new ReadConf(`../sites/${site}.locations.xml`)
+    let filePath = path.resolve(__dirname, `../sites/${site}.locations.xml`)
+    let conf = new ReadConf(filePath)
     await conf.loadData()
     let fields = conf.getFields()
     let locations = conf.getLocations()
     let searchField = req.body[fields[0]['argName']] || false
 
     if (searchField === false) {
-      res.statusCode(500)
+      res.status(500)
       res.send({message: 'Search Field Not Set'})
       return
     }
@@ -68,7 +72,8 @@ module.exports = {
     let site = validateSite(req, res)
     if (site === false) { return }
 
-    let conf = new ReadConf(`../sites/${site}.locations.xml`)
+    let filePath = path.resolve(__dirname, `../sites/${site}.locations.xml`)
+    let conf = new ReadConf(filePath)
     await conf.loadData()
 
     res.send({

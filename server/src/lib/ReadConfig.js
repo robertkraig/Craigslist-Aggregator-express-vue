@@ -7,7 +7,7 @@ const getInfo = (obj) => {
 }
 
 const getFields = (obj) => {
-  return obj['clrepo']['info']['fields']['argField']
+  return obj['clrepo']['info'][0]['fields'][0]['argField']
 }
 
 const getFieldsArray = (obj) => {

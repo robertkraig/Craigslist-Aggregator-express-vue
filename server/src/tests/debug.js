@@ -1,8 +1,9 @@
 let Scraper = require('../lib/Scraper')
 let ReadConfig = require('../lib/ReadConfig')
+let path = require('path')
 
 let data = {
-  'include': ['imperial.craigslist.org', 'inlandempire.craigslist.org', 'losangeles.craigslist.org', 'orangecounty.craigslist.org', 'palmsprings.craigslist.org', 'sandiego.craigslist.org', 'ventura.craigslist.org'],
+  'include': ['inlandempire.craigslist.org', 'losangeles.craigslist.org', 'orangecounty.craigslist.org', 'sandiego.craigslist.org'],
   'regions': ['socal'],
   'query': 'php',
   'srchType': 'A',
@@ -11,7 +12,8 @@ let data = {
 
 let run = async () => {
   let site = 'findjobs'
-  let conf = new ReadConfig(`../sites/${site}.locations.xml`)
+  let filePath = path.resolve(__dirname, `../sites/${site}.locations.xml`)
+  let conf = new ReadConfig(filePath)
   await conf.loadData()
   let info = conf.getInfo()
   let regions = conf.getRegions()
